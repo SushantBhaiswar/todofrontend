@@ -1,0 +1,11 @@
+.dashbord-main {
+    background-color: black;
+    min-height: 100vh;
+    padding: 20px
+}
+
+.title-box {
+    color: aliceblue;
+    font-size: xx-large;
+    margin-top: 20px;
+}

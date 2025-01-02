@@ -1,0 +1,23 @@
+.header-main {
+    background-color: black;
+    display: flex;
+}
+
+.search-box {
+    height: 40px;
+    width: 250px;
+    border-radius: 10px;
+}
+
+.header-time {
+    height: 40px;
+    width: 250px;
+    border-radius: 10px;
+    color: aliceblue;
+    background-color: blue;
+    margin-left: 500px;
+    text-align: center;
+    align-items: center;
+}
+
+.header-search {}
