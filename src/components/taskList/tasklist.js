@@ -5,7 +5,7 @@ import { taskList, taskUDelete } from "@/apis";
 import { Delete } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
-export default function TaskList({ tasks, setTasks, filter }) {
+export default function TaskList({ tasks, setTasks, filter, isDataAdded, setIsDataAdded }) {
   const [open, setOpen] = useState({ show: false, des: "" })
   const [apiData, setApiData] = useState([])
   const [dataLoading, setDataLoading] = useState(true)
@@ -16,12 +16,13 @@ export default function TaskList({ tasks, setTasks, filter }) {
       const response = await taskList({ limit: 10 })
       if (response?.code == 200) {
         setApiData(response?.data?.results)
+        setIsDataAdded(false)
         setDataLoading(false)
       }
     }
 
     fetchData()
-  }, [dataLoading])
+  }, [dataLoading, isDataAdded])
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

@@ -11,6 +11,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --error-text: red;
   }
 }
 
@@ -18,4 +19,20 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+  margin: 0.5rem 0;
+}
+
+textarea {
+  margin-top: 0.5rem;
+}
+
+.error-text {
+  color: var(--error-text);
+}
+
+.MuiPaper-root {
+  background-color: #0a0a0a !important;
 }
