@@ -1,9 +1,9 @@
 "use client"; // Add this directive at the top of the file
 
-export default function Sidebar({ filter, setFilter ,handleAddNewTask }) {
-   
+export default function Sidebar({ filter, setFilter, handleAddNewTask }) {
+
     const filters = [
-        { id: "all", label: "All tasks" },
+        { id: "", label: "All tasks" },
         { id: "today", label: "Today's tasks" },
         { id: "completed", label: "Completed tasks" },
         { id: "pending", label: "Pending tasks" },

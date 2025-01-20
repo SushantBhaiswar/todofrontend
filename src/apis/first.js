@@ -3,7 +3,7 @@ import React from 'react'
 import { apiConst } from './apiConst';
 
 
-const API_BASE_URL = 'http://192.168.29.229:3001/v1/'
+const API_BASE_URL = 'http://13.233.31.68/v1/'
 
 const axiosInstance = axios.create({
     baseURL: API_BASE_URL,
@@ -52,6 +52,17 @@ export async function taskUpdate({ id, payload }) {
 export async function taskUDelete(id) {
     try {
         const res = await axiosInstance.delete(`${apiConst.TASK}/${id}`);
+        console.log(res.data);
+        return res.data;
+    } catch (error) {
+        console.error("Error during API call:", error);
+        throw error;
+    }
+}
+
+export async function taskApprove(id, payload) {
+    try {
+        const res = await axiosInstance.patch(`${apiConst.TASK}/${id}`, payload);
         console.log(res.data);
         return res.data;
     } catch (error) {

@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import Modal from "../modal/CustomModal";
 import { useEffect, useState } from "react";
-import { taskList, taskUDelete } from "@/apis";
+import { taskApprove, taskList, taskUDelete } from "@/apis";
 import { Delete } from "@mui/icons-material";
 import { Box } from "@mui/material";
 
@@ -10,19 +10,24 @@ export default function TaskList({ tasks, setTasks, filter, isDataAdded, setIsDa
   const [apiData, setApiData] = useState([])
   const [dataLoading, setDataLoading] = useState(true)
 
-
   useEffect(() => {
     const fetchData = async () => {
-      const response = await taskList({ limit: 10 })
-      if (response?.code == 200) {
-        setApiData(response?.data?.results)
-        setIsDataAdded(false)
-        setDataLoading(false)
+      try {
+        const response = await taskList({ limit: 10, ...(filter && { filter: filter }) });
+        if (response?.code === 200) {
+          setApiData(response?.data?.results || []);
+          setIsDataAdded(false);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setDataLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [dataLoading, isDataAdded])
+
+    fetchData();
+  }, [dataLoading, isDataAdded, filter]);
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -59,9 +64,12 @@ export default function TaskList({ tasks, setTasks, filter, isDataAdded, setIsDa
               >
                 {task.status}
               </span>
-              <button onClick={() => {/* Toggle completion */ }}>
+              {task.status !== "completed" && <button onClick={async () => {
+                await taskApprove(task?._id)
+                setDataLoading(true)
+              }}>
                 {task.status === "completed" ? "↩️" : "✓"}
-              </button>
+              </button>}
               <button onClick={async () => {
                 await taskUDelete(task?._id)
                 setDataLoading(true)
