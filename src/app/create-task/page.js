@@ -4,6 +4,7 @@
 import { useState } from "react";
 import store from "@/store";
 import { useRouter } from "next/navigation";
+import { taskCreate } from "@/apis";
 export default function CreateTask() {
     const router = useRouter()
     const [title, setTitle] = useState("");
@@ -18,6 +19,11 @@ export default function CreateTask() {
 
         // Add the new task to the saved tasks array
         savedTasks.push({ title, description, dueDate, status });
+
+        const payload = { title, description, dueDate }
+        const response = await taskCreate(payload)
+
+        console.log('response', response)
 
         // Save the updated tasks back to localStorage
         localStorage.setItem('tasks', JSON.stringify(savedTasks));
