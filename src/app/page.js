@@ -6,9 +6,10 @@ import LoadTester from "../components/loadTester/loadtester";
 import { useRouter } from "next/navigation";
 import store from "@/store";
 import AlertDialogSlide from "@/components/CreateTask";
+import { taskList } from "@/apis";
 
 export default function Home() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState(0);
 
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("all");
@@ -19,10 +20,25 @@ export default function Home() {
     setOpen(true);
   };
 
+
+
   useEffect(() => {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    setTasks(savedTasks);
-  }, []);
+    const fetchData = async () => {
+      try {
+        const response = await taskList({ limit: 10, ...(filter && filter !== 'all' && { filter: filter }) });
+        if (response?.code === 200) {
+          setTasks(response?.data?.totalCount ?? 0)
+
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [filter]);
+
+
 
   return (
     <div className="flex min-h-screen" sx={{}}>
@@ -32,7 +48,7 @@ export default function Home() {
 
       <main className="flex-1 p-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Tasks ({tasks.length})</h1>
+          <h1 className="text-2xl font-bold">Tasks ({tasks})</h1>
           <LoadTester />
         </div>
         <TaskList tasks={tasks} setTasks={setTasks} filter={filter} isDataAdded={isDataAdded} setIsDataAdded={setIsDataAdded} />

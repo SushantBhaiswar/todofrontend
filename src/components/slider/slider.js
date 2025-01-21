@@ -3,7 +3,7 @@
 export default function Sidebar({ filter, setFilter, handleAddNewTask }) {
 
     const filters = [
-        { id: "", label: "All tasks" },
+        { id: "all", label: "All tasks" },
         { id: "today", label: "Today's tasks" },
         { id: "completed", label: "Completed tasks" },
         { id: "pending", label: "Pending tasks" },

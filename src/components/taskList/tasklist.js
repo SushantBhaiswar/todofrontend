@@ -10,11 +10,15 @@ export default function TaskList({ tasks, setTasks, filter, isDataAdded, setIsDa
   const [apiData, setApiData] = useState([])
   const [dataLoading, setDataLoading] = useState(true)
 
+
+  const search = (localStorage.getItem('search'))
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await taskList({ limit: 10, ...(filter && { filter: filter }) });
+        const response = await taskList({ limit: 10, ...(filter && filter !== 'all' && { filter: filter }) });
         if (response?.code === 200) {
+          localStorage.setItem('count', JSON.stringify(response?.data?.totalCount))
           setApiData(response?.data?.results || []);
           setIsDataAdded(false);
         }
@@ -25,9 +29,8 @@ export default function TaskList({ tasks, setTasks, filter, isDataAdded, setIsDa
       }
     };
 
-
     fetchData();
-  }, [dataLoading, isDataAdded, filter]);
+  }, [dataLoading, isDataAdded, filter, search]);
 
   return (
     <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
